@@ -34,19 +34,27 @@ class SpotifyClient:
         return track_ids
 
     #指定されたプレイリストの全曲IDを取得
-    def get_ids_from_playlist(self, playlist_id: str) -> set:
-        result = self.sp.playlist_tracks(playlist_id)
-        tracks = result['items']   #itemsは１曲の情報のすべてを取得するためのもの
-
-        track_ids = set()
-        while result['next']:
-            result = self.sp.next(result)   # sp.next()で次のページのデータを取得
-            tracks.extend(result['items'])
-
-        for item in tracks:
-            track_ids.add(item['track']['id'])
-
-        return track_ids
+    def get_ids_from_playlist(self, playlist_id):
+        ids = []
+    # 最初の100曲を取得
+        results = self.sp.playlist_items(playlist_id)
+    
+        while results:
+            # 現在のページにある曲のIDをリストに集める
+            for item in results['items']:
+                # 楽曲データが正常に存在する場合のみIDを取得
+                if item['track'] and item['track']['id']:
+                    ids.append(item['track']['id'])
+        
+            # 次の100曲（nextページ）があるかチェック
+            if results['next']:
+                # 次のページを取得してresultsを更新
+                results = self.sp.next(results)
+            else:
+                # 次のページがなければループ終了
+                break
+            
+        return ids
     
     def get_latest_liked_songs(self, limit: int = 50) -> list:
         result = self.sp.current_user_saved_tracks(limit=limit)
