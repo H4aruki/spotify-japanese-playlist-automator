@@ -1,6 +1,25 @@
 
-config.py
-.venv/
+.env
+
+#仮想環境
+/
 venv/
+
+#Pythonが自動生成するキャッシュ
 .cache
 __pycache__
+*.pyc
+
+#ログファイル
+*.log
+app.log
+
+#OS設定ファイル
+.DS_Store
+Thumbs.db
+
+#バッチファイル
+run_spotify.bat
+
+
+.env

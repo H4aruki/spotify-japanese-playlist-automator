@@ -4,6 +4,13 @@ from song_judgement import is_japanese_song
 import config
 import time
 
+# 実行時のログを 'app.log' というファイルに保存する設定
+# 'a' は追記モードなので、実行するたびに履歴が積み重なります
+import sys
+sys.stdout = open('app.log', 'a', encoding='utf-8')
+sys.stderr = open('error.log', 'a', encoding='utf-8') # エラー専用のログ
+
+
 def origin():
     print("処理を開始します...")
     client = SpotifyClient()   #Spotifyクライアントを初期化
@@ -71,10 +78,16 @@ def main():
     print("処理が完了しました。")
 
 
+"""
+#まずこちらを実行。
+if __name__ == "__main__":
+    
+    origin()
+"""
 
-#origin()
 
 
+#続いてこちらを実行。origin()の部分はコメントアウト。
 if __name__ == "__main__":
     main()
 
